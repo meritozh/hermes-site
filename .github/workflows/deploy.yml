@@ -37,13 +37,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build site
-        run: rm -rf node_modules/.astro && pnpm build
+        run: rm -rf node_modules/.astro node_modules/.vite && pnpm build
         env:
           DIARY_PATH: ${{ github.workspace }}/diary-content
 
