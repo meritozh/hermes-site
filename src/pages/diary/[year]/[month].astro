@@ -41,9 +41,9 @@ const base = import.meta.env.BASE_URL;
 
   <!-- Timeline -->
   <div class="relative">
-    <!-- Single continuous vertical line behind all entries, starts at first badge center -->
+    <!-- Vertical line runs behind all entries; badges (z-10) cover it where they overlap -->
     {monthData.entries.length > 1 && (
-      <div class="absolute left-[31px] top-[48px] bottom-[48px] w-px bg-stone-200 dark:bg-stone-800 hidden sm:block" />
+      <div class="absolute left-[31px] top-0 bottom-0 w-px bg-stone-200 dark:bg-stone-800 hidden sm:block" />
     )}
     {monthData.entries.map((entry) => (
       <DiaryEntry entry={entry} />
