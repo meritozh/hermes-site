@@ -5,9 +5,10 @@
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling + prevent layout shift from scrollbar */
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 /* Dark mode support */

@@ -39,12 +39,16 @@ const base = import.meta.env.BASE_URL;
     </p>
   </div>
 
-  <!-- Timeline line -->
+  <!-- Timeline -->
   <div class="relative pl-0">
-    <div class="absolute left-[31px] top-0 bottom-0 w-px bg-stone-200 dark:bg-stone-800 hidden sm:block" />
-
-    {monthData.entries.map((entry) => (
-      <DiaryEntry entry={entry} />
+    {monthData.entries.map((entry, index) => (
+      <div class="relative">
+        <!-- Vertical line segment: from center of this badge to center of next badge (or bottom for last) -->
+        {index < monthData.entries.length - 1 && (
+          <div class="absolute left-[31px] top-[48px] bottom-0 w-px bg-stone-200 dark:bg-stone-800 hidden sm:block" />
+        )}
+        <DiaryEntry entry={entry} />
+      </div>
     ))}
   </div>
 
