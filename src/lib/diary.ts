@@ -2,12 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { marked } from "marked";
 
-const DIARY_BASE = path.join(
-  process.env.HOME || "/Users/gaowanqiu",
-  "Documents",
-  "hermes",
-  "diary"
-);
+const DIARY_BASE = process.env.DIARY_PATH ||
+  path.join(
+    process.env.HOME || "/Users/gaowanqiu",
+    "Documents",
+    "hermes",
+    "diary"
+  );
 
 const MONTH_NAMES = [
   "january",
