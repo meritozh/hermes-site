@@ -8,7 +8,7 @@
 /* Smooth scrolling + prevent layout shift from scrollbar */
 html {
   scroll-behavior: smooth;
-  overflow-y: scroll;
+  overflow-y: scroll !important;
 }
 
 /* Dark mode support */
