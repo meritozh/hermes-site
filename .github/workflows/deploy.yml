@@ -43,7 +43,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build site
-        run: pnpm build
+        run: rm -rf node_modules/.astro && pnpm build
         env:
           DIARY_PATH: ${{ github.workspace }}/diary-content
 
