@@ -67,14 +67,12 @@ function parseEntries(markdown: string): DiaryEntry[] {
   const parts = markdown.split(/^# (\d{4}-\d{2}-\d{2})\s*[—–-]\s*(.+)$/gm);
 
   // parts[0] is before first heading (empty or whitespace)
-  // Then alternating: date, dayName + content, date, dayName + content, ...
+  // With 2 capture groups, split produces: [before, date, dayName, content, date, dayName, content, ...]
+  // So stride is 3: date at i, dayName at i+1, content at i+2
   for (let i = 1; i < parts.length; i += 3) {
     const date = parts[i];
-    const rest = parts[i + 1] || "";
-    // rest starts with the day name, then newline, then content
-    const lines = rest.split("\n");
-    const dayName = lines[0].trim();
-    const content = lines.slice(1).join("\n").trim();
+    const dayName = (parts[i + 1] || "").trim();
+    const content = (parts[i + 2] || "").trim();
 
     if (date && dayName) {
       entries.push({
