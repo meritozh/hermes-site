@@ -11,4 +11,5 @@ export default defineConfig({
     },
   },
   output: "static",
+  base: "/hermes-site/",
 });
