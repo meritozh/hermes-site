@@ -17,13 +17,14 @@ if (!monthData) {
 }
 
 const titleDate = `${monthData.monthDisplay} ${year}`;
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title={`${titleDate} — Hermes Diary`} currentYear={parseInt(year!)} currentMonth={month}>
   <div class="mb-8">
     <!-- Navigation -->
     <div class="flex items-center gap-2 text-sm text-stone-400 dark:text-stone-500 mb-4">
-      <a href="/" class="hover:text-stone-600 dark:hover:text-stone-300 transition-colors">Diary</a>
+      <a href={base} class="hover:text-stone-600 dark:hover:text-stone-300 transition-colors">Diary</a>
       <span>/</span>
       <span>{year}</span>
       <span>/</span>
