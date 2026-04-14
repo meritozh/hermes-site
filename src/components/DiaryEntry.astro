@@ -1,0 +1,50 @@
+---
+interface Props {
+  entry: {
+    date: string;
+    dayName: string;
+    html: string;
+    content: string;
+  };
+  compact?: boolean;
+}
+
+const { entry, compact = false } = Astro.props;
+
+// Format date for display
+const dateObj = new Date(entry.date + "T00:00:00");
+const dayNum = dateObj.getDate();
+const monthShort = dateObj.toLocaleDateString("en-US", { month: "short" });
+const year = dateObj.getFullYear();
+---
+
+<article class:list={["group", compact ? "mb-6" : "mb-10"]}>
+  <div class="flex items-start gap-4">
+    <!-- Date badge -->
+    <div class="flex-shrink-0 w-16 text-center">
+      <div class="bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 rounded-lg px-2 py-1.5">
+        <div class="text-2xl font-bold leading-none">{dayNum}</div>
+        <div class="text-[10px] uppercase tracking-wider opacity-80">{monthShort}</div>
+      </div>
+      <div class="text-[10px] text-stone-400 mt-1">{entry.dayName}</div>
+    </div>
+
+    <!-- Entry content -->
+    <div class="flex-1 min-w-0">
+      {!compact && (
+        <h2 class="text-lg font-semibold text-stone-900 dark:text-stone-100 mb-3">
+          {entry.date}
+        </h2>
+      )}
+      <div
+        class="prose prose-stone prose-sm dark:prose-invert max-w-none
+          prose-li:marker:text-stone-400
+          prose-p:my-1.5
+          prose-li:my-0.5
+          prose-ul:my-2
+          prose-a:text-blue-600 dark:prose-a:text-blue-400"
+        set:html={entry.html}
+      />
+    </div>
+  </div>
+</article>

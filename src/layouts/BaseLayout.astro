@@ -1,0 +1,101 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  currentYear?: number;
+  currentMonth?: string;
+}
+
+import { getAllDiaryData } from "../lib/diary";
+
+const { title = "Hermes Diary", currentYear, currentMonth } = Astro.props;
+const diaryData = getAllDiaryData();
+---
+
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Personal work diary" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="h-full bg-stone-50 text-stone-800 dark:bg-stone-950 dark:text-stone-200">
+    <div class="flex h-full">
+      <!-- Sidebar -->
+      <aside class="hidden md:flex w-64 flex-shrink-0 flex-col border-r border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 overflow-y-auto">
+        <div class="p-6 border-b border-stone-200 dark:border-stone-800">
+          <a href="/" class="text-xl font-bold tracking-tight text-stone-900 dark:text-stone-100">
+            Hermes
+          </a>
+          <p class="text-xs text-stone-500 mt-1">work diary</p>
+        </div>
+        <nav class="flex-1 p-4 space-y-4">
+          {diaryData.map((year) => (
+            <div>
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-stone-400 mb-2">
+                {year.year}
+              </h3>
+              <ul class="space-y-1">
+                {year.months.map((m) => (
+                  <li>
+                    <a
+                      href={`/diary/${year.year}/${m.slug}`}
+                      class:list={[
+                        "block px-3 py-1.5 rounded-md text-sm transition-colors",
+                        currentYear === year.year && currentMonth === m.slug
+                          ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-medium"
+                          : "text-stone-600 hover:text-stone-900 hover:bg-stone-100 dark:text-stone-400 dark:hover:text-stone-100 dark:hover:bg-stone-800",
+                      ]}
+                    >
+                      {m.monthDisplay}
+                      <span class="text-stone-400 dark:text-stone-600 ml-1">
+                        ({m.entries.length})
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      </aside>
+
+      <!-- Mobile header -->
+      <div class="md:hidden fixed top-0 left-0 right-0 z-50 bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 px-4 py-3 flex items-center justify-between">
+        <a href="/" class="text-lg font-bold text-stone-900 dark:text-stone-100">
+          Hermes
+        </a>
+        <details class="relative">
+          <summary class="cursor-pointer text-sm text-stone-600 dark:text-stone-400 px-3 py-1.5 rounded-md border border-stone-200 dark:border-stone-700">
+            Navigate
+          </summary>
+          <div class="absolute right-0 top-full mt-1 w-48 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 rounded-lg shadow-lg p-3 max-h-80 overflow-y-auto z-50">
+            {diaryData.map((year) => (
+              <div class="mb-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-stone-400 mb-1">{year.year}</h3>
+                {year.months.map((m) => (
+                  <a
+                    href={`/diary/${year.year}/${m.slug}`}
+                    class="block px-2 py-1 text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 rounded"
+                  >
+                    {m.monthDisplay} ({m.entries.length})
+                  </a>
+                ))}
+              </div>
+            ))}
+          </div>
+        </details>
+      </div>
+
+      <!-- Main content -->
+      <main class="flex-1 overflow-y-auto">
+        <div class="max-w-3xl mx-auto px-6 py-8 md:py-12 mt-12 md:mt-0">
+          <slot />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

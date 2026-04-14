@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import DiaryEntry from "../../../components/DiaryEntry.astro";
+import { getAllMonthPaths, getMonthData } from "../../../lib/diary";
+
+export function getStaticPaths() {
+  return getAllMonthPaths().map((p) => ({
+    params: { year: String(p.year), month: p.month },
+  }));
+}
+
+const { year, month } = Astro.params;
+const monthData = getMonthData(parseInt(year!), month!);
+
+if (!monthData) {
+  return Astro.redirect("/404");
+}
+
+const titleDate = `${monthData.monthDisplay} ${year}`;
+---
+
+<BaseLayout title={`${titleDate} — Hermes Diary`} currentYear={parseInt(year!)} currentMonth={month}>
+  <div class="mb-8">
+    <!-- Navigation -->
+    <div class="flex items-center gap-2 text-sm text-stone-400 dark:text-stone-500 mb-4">
+      <a href="/" class="hover:text-stone-600 dark:hover:text-stone-300 transition-colors">Diary</a>
+      <span>/</span>
+      <span>{year}</span>
+      <span>/</span>
+      <span class="text-stone-700 dark:text-stone-300">{monthData.monthDisplay}</span>
+    </div>
+
+    <h1 class="text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100">
+      {titleDate}
+    </h1>
+    <p class="mt-2 text-stone-500 dark:text-stone-400">
+      {monthData.entries.length} {monthData.entries.length === 1 ? "entry" : "entries"}
+    </p>
+  </div>
+
+  <!-- Timeline line -->
+  <div class="relative pl-0">
+    <div class="absolute left-[31px] top-0 bottom-0 w-px bg-stone-200 dark:bg-stone-800 hidden sm:block" />
+
+    {monthData.entries.map((entry) => (
+      <DiaryEntry entry={entry} />
+    ))}
+  </div>
+
+  {monthData.entries.length === 0 && (
+    <div class="text-center py-20">
+      <div class="text-6xl mb-4">📭</div>
+      <h2 class="text-xl font-medium text-stone-600 dark:text-stone-400">
+        No entries this month
+      </h2>
+    </div>
+  )}
+</BaseLayout>
