@@ -1,0 +1,14 @@
+version: 2
+updates:
+  # Root package.json and pnpm-lock.yaml. Dependabot's npm ecosystem
+  # updates pnpm lockfiles; this is a single package, not a workspace.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # .github/workflows/deploy.yml
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
